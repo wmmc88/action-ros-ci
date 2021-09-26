@@ -82,9 +82,7 @@ export async function execBashCommand(
 	log_message?: string
 ): Promise<number> {
 	commandPrefix = commandPrefix || "";
-	const bashScript = `${commandPrefix}${commandLine}`;
-	const message = log_message || `Invoking: bash -c '${bashScript}'`;
-
+	const shellScript = `${commandPrefix}${commandLine}`;
 	let toolRunnerCommandLine = "";
 	let toolRunnerCommandLineArgs: string[] = [];
 	if (isWindows) {
@@ -102,15 +100,18 @@ export async function execBashCommand(
 			"call",
 			"%programfiles(x86)%\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Auxiliary\\Build\\vcvarsall.bat",
 			"amd64",
-			"&",
-			"C:\\Program Files\\Git\\bin\\bash.exe",
-			"-c",
-			bashScript,
+			"&&",
+			shellScript,
 		];
 	} else {
 		toolRunnerCommandLine = "bash";
-		toolRunnerCommandLineArgs = ["-c", bashScript];
+		toolRunnerCommandLineArgs = ["-c", shellScript];
 	}
+	const message =
+		log_message ||
+		`Invoking: ${toolRunnerCommandLine} ${toolRunnerCommandLineArgs} '${shellScript}'`;
+	// TODO REMOVE:
+	console.log(message);
 	const runner: tr.ToolRunner = new tr.ToolRunner(
 		toolRunnerCommandLine,
 		toolRunnerCommandLineArgs,

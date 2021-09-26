@@ -11025,8 +11025,7 @@ function resolveVcsRepoFileUrl(vcsRepoFileUrl) {
 function execBashCommand(commandLine, commandPrefix, options, log_message) {
     return __awaiter(this, void 0, void 0, function* () {
         commandPrefix = commandPrefix || "";
-        const bashScript = `${commandPrefix}${commandLine}`;
-        const message = log_message || `Invoking: bash -c '${bashScript}'`;
+        const shellScript = `${commandPrefix}${commandLine}`;
         let toolRunnerCommandLine = "";
         let toolRunnerCommandLineArgs = [];
         if (isWindows) {
@@ -11044,16 +11043,18 @@ function execBashCommand(commandLine, commandPrefix, options, log_message) {
                 "call",
                 "%programfiles(x86)%\\Microsoft Visual Studio\\2019\\Enterprise\\VC\\Auxiliary\\Build\\vcvarsall.bat",
                 "amd64",
-                "&",
-                "C:\\Program Files\\Git\\bin\\bash.exe",
-                "-c",
-                bashScript,
+                "&&",
+                shellScript,
             ];
         }
         else {
             toolRunnerCommandLine = "bash";
-            toolRunnerCommandLineArgs = ["-c", bashScript];
+            toolRunnerCommandLineArgs = ["-c", shellScript];
         }
+        const message = log_message ||
+            `Invoking: ${toolRunnerCommandLine} ${toolRunnerCommandLineArgs} '${shellScript}'`;
+        // TODO REMOVE:
+        console.log(message);
         const runner = new tr.ToolRunner(toolRunnerCommandLine, toolRunnerCommandLineArgs, options);
         if (options && options.silent) {
             return runner.exec();
