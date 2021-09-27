@@ -11256,7 +11256,7 @@ function run_throw() {
         }
         // Make sure to delete root .colcon directory if it exists
         // This is because, for some reason, using Docker, commands might get run as root
-        yield execBashCommand(`rm -rf ${path.join(path.sep, "root", ".colcon")} || true`, undefined, Object.assign(Object.assign({}, options), { silent: true }));
+        yield execBashCommand(`rm -rf ${path.join(path.sep, "root", ".colcon")} || true`, `C:\\Program Files\\Git\\bin\\bash.exe -c `, Object.assign(Object.assign({}, options), { silent: true }));
         for (const vcsRepoFileUrl of vcsRepoFileUrlListNonEmpty) {
             const resolvedUrl = resolveVcsRepoFileUrl(vcsRepoFileUrl);
             yield execBashCommand(`vcs import --force --recursive src/ --input ${resolvedUrl}`, undefined, options);

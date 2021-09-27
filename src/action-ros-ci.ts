@@ -414,7 +414,7 @@ async function run_throw(): Promise<void> {
 	// This is because, for some reason, using Docker, commands might get run as root
 	await execBashCommand(
 		`rm -rf ${path.join(path.sep, "root", ".colcon")} || true`,
-		undefined,
+		`C:\\Program Files\\Git\\bin\\bash.exe -c `,
 		{ ...options, silent: true }
 	);
 
