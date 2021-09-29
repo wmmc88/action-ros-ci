@@ -230,10 +230,18 @@ async function runTests(
 	const colconTestCmdOptions =
 		colconTestCmdOptionsStr !== "" ? [colconTestCmdOptionsStr] : [];
 	let colconTestCmd = [
+		`set`,
+		`PYTHON`,
+		`&&`,
+		`set`,
+		`ROS`,
+		`&&`,
+		`pip`,
+		`freeze`,
+		`&&`,
 		`colcon`,
 		`test`,
 		`--event-handlers=console_cohesion+`,
-		`--return-code-on-test-failure`,
 		...colconTestCmdOptions,
 	];
 	if (isWindows) {
@@ -244,6 +252,24 @@ async function runTests(
 		options,
 		false
 	);
+
+	// //TEMP
+	// let colconTestCmdError = [
+	// 	`colcon`,
+	// 	`test`,
+	// 	`--event-handlers=console_cohesion+`,
+	// 	`--rerun-failed`, // temp
+	// 	`--output-on-failure`, //TEMP
+	// 	...colconTestCmdOptions,
+	// ];
+	// if (isWindows) {
+	// 	colconTestCmdError = [...colconTestCmdError, `--merge-install`];
+	// }
+	// await execShellCommand(
+	// 	[...colconCommandPrefix, ...colconTestCmdError],
+	// 	options,
+	// 	false
+	// );
 
 	if (!isWindows) {
 		// colcon lcov-result not supported in Windows right now
